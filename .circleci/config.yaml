@@ -1,0 +1,78 @@
+version 2.1
+
+orbs:
+  node: circleci/node@5.0.1
+  docker: circleci/docker@2.1.4
+  heroku: circleci/heroku@2.0.0
+  snyk: snyk/snyk@1.5.0
+
+jobs:
+  build:
+    docker:
+      - image: cimg/node:16:10
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run: |
+          echo "installing dependencies....."
+          npm install
+  
+  publish:
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check
+      - docker/build:
+          image: henryeff/sre
+          tag: v1.0
+      - docker/push:
+          image: henryeff/sre
+          tag: v1.0
+
+  deploy:
+    docker:
+      - image: cimg/node:16:10
+    steps:
+      - setup_remote_docker
+      - heroku/install
+      - checkout
+      - run:
+          name: Heroku Container Deploy
+          command: |
+            heroku container:login
+            heroku container:push web -a sre-recipe
+            heroku container:release web -a sre-recipe
+    
+  scan:
+    docker:
+      - image: cimg/node:16:10
+    environment:
+      IMAGE_NAME: henryeff/sre
+    steps:
+      - checkout
+      - setup_remote_docker
+      - docker/check
+      - run: docker build -t $IMAGE_NAME .
+      - snyk/scan:
+          docker-image-name: $IMAGE_NAME
+          severity-threshold: "high"
+  
+  workflows:
+    build_scan_deploy:
+      jobs:
+        - build:
+            filters:
+              branches:
+                only: master
+        - scan:
+            requires:
+              - build
+            filters:
+              branches:
+                only: main
+        - publish
+        - deploy:
+            requires:
+              - publish
