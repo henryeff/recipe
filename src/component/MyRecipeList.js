@@ -18,7 +18,7 @@ function MyRecipeList({
               }}
               className={styles.topicName}
             >
-              {item.strMeal} {item.id}
+              {item.strMeal}
             </h2>
           </Link>
           <nav>

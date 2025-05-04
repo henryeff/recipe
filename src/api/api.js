@@ -7,8 +7,10 @@ const headers = {
 };
 
 const mockApi = "https://680a3ec61f1a52874cdfc6f9.mockapi.io/henryeff/api";
+const apiGateway =
+  "https://usgedvmwe0.execute-api.ap-southeast-1.amazonaws.com";
 
 const api = axios.create({ baseURL, headers });
-const myRecipeApi = axios.create({ baseURL: mockApi, headers });
+const myRecipeApi = axios.create({ baseURL: apiGateway, headers });
 
 export { api, myRecipeApi };

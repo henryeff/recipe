@@ -153,8 +153,9 @@ function App() {
     let getMyFavoriteMessage = "";
     try {
       setDisplayLoading(true);
-      const response = await myRecipeApi.get("/favorites");
+      const response = await myRecipeApi.get("/favorite-recipe");
       setMyFavoriteList(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log("Error", error.message);
       getMyFavoriteMessage = error.message;
@@ -209,7 +210,7 @@ function App() {
         strMealThumb: recipeById.strMealThumb,
         idMeal: recipeById.idMeal,
       };
-      await myRecipeApi.post("/favorites", favoriteList);
+      await myRecipeApi.post("/favorite-recipe", favoriteList);
       addMyFavouriteMessage =
         "Recipe has been added to My Favorite Recipe List";
     } catch (error) {
@@ -272,7 +273,8 @@ function App() {
     let deleteMyFavoriteMessage = "";
     try {
       setDeleteMyFavoriteLoading(true);
-      await myRecipeApi.delete("/favorites/" + id);
+      console.log("id is: " + id);
+      await myRecipeApi.delete("/favorite-recipe/" + id);
       deleteMyFavoriteMessage =
         "Recipe has been deleted from My Favorite Recipe List";
     } catch (error) {
@@ -344,7 +346,7 @@ function App() {
             }
           >
             <Route
-              path=":id"
+              path=":idMeal"
               element={
                 <DisplayMyFavorite
                   openModal={openModal}

@@ -5,10 +5,10 @@ function myFavoriteList({ myFavoriteList, handlerOpenModal, searchRecipe }) {
   return (
     <>
       {myFavoriteList.map((item) => (
-        <div className={styles.topic} key={item.id}>
+        <div className={styles.topic} key={item.idMeal}>
           <h2 className={styles.topicName}>{item.strMeal}</h2>
           <nav>
-            <Link to={item.id} key={item.id}>
+            <Link to={item.idMeal} key={item.idMeal}>
               <img
                 onClick={async () => {
                   await searchRecipe(item.idMeal);

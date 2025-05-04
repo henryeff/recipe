@@ -103,7 +103,7 @@ function DisplayMyFavorite({
               <button
                 style={{ margin: "15px", padding: "15px" }}
                 onClick={async () => {
-                  await deleteMyFavorite(id);
+                  await deleteMyFavorite(recipeById.idMeal);
                   if (!deleteMyFavoriteLoading) {
                     handlerCloseModal();
                     navigate("/favorite");
