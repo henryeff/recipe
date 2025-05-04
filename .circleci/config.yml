@@ -41,6 +41,7 @@ jobs:
           name: Heroku Container Deploy
           command: |
             heroku container:login
+            heroku stack:set container -a sre-recipe
             heroku container:push web -a sre-recipe
             heroku container:release web -a sre-recipe
 
