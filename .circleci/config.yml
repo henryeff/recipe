@@ -1,5 +1,4 @@
-version 2.1
-
+version: 2.1
 orbs:
   node: circleci/node@5.0.1
   docker: circleci/docker@2.1.4
@@ -17,7 +16,7 @@ jobs:
       - run: |
           echo "installing dependencies....."
           npm install
-  
+
   publish:
     executor: docker/docker
     steps:
@@ -44,7 +43,7 @@ jobs:
             heroku container:login
             heroku container:push web -a sre-recipe
             heroku container:release web -a sre-recipe
-    
+
   scan:
     docker:
       - image: cimg/node:16:10
@@ -58,21 +57,23 @@ jobs:
       - snyk/scan:
           docker-image-name: $IMAGE_NAME
           severity-threshold: "high"
-  
-  workflows:
-    build_scan_deploy:
-      jobs:
-        - build:
-            filters:
-              branches:
-                only: master
-        - scan:
-            requires:
-              - build
-            filters:
-              branches:
-                only: main
-        - publish
-        - deploy:
-            requires:
-              - publish
+
+workflows:
+  build_scan_deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
+      - scan:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - publish:
+          requires:
+            - scan
+      - deploy:
+          requires:
+            - publish
