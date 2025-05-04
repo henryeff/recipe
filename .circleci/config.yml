@@ -46,7 +46,7 @@ jobs:
 
   scan:
     docker:
-      - image: cimg/node:16:10
+      - image: cimg/node:23.11
     environment:
       IMAGE_NAME: henryeff/sre
     steps:
