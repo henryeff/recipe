@@ -14,7 +14,7 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run: |
-          echo "installing dependencies....."
+          echo "installing dependencies......"
           npm install
 
   publish:
