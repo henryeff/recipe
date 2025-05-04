@@ -8,7 +8,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: cimg/node:16:10
+      - image: cimg/node:23.11
     steps:
       - checkout
       - node/install-packages:
@@ -32,7 +32,7 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/node:16:10
+      - image: cimg/node:23.11
     steps:
       - setup_remote_docker
       - heroku/install
