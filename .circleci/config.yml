@@ -73,9 +73,6 @@ workflows:
           filters:
             branches:
               only: master
-      - publish:
-          requires:
-            - scan
       - deploy:
           requires:
-            - publish
+            - scan
